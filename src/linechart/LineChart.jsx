@@ -23,7 +23,6 @@ module.exports = React.createClass({
   propTypes: {
     margins: React.PropTypes.object,
     pointRadius: React.PropTypes.number,
-    colors: React.PropTypes.func,
     displayDataPoints: React.PropTypes.bool,
     hoverAnimation: React.PropTypes.bool,
     interpolate: React.PropTypes.bool,
@@ -86,7 +85,7 @@ module.exports = React.createClass({
             data={series.values}
             width={innerWidth}
             height={innerHeight}
-            fill={props.colors(idx)}
+            fill={props.colors(props.colorAccessor(series, idx))}
             pointRadius={props.pointRadius}
             key={idx}
             xAccessor={props.xAccessor}
@@ -104,6 +103,7 @@ module.exports = React.createClass({
         data={data}
         margins={props.margins}
         colors={props.colors}
+        colorAccessor={props.colorAccessor}
         width={props.width}
         height={props.height}
         title={props.title}

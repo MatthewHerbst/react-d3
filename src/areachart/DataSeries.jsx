@@ -9,15 +9,23 @@ module.exports = React.createClass({
   displayName: 'DataSeries',
 
   propTypes: {
+    data:              React.PropTypes.array.isRequired,
+    seriesName:        React.PropTypes.string,
+    fill:              React.PropTypes.string,
+    xScale:            React.PropTypes.func.isRequired,
+    yScale:            React.PropTypes.func.isRequried,
+    xAccessor:         React.PropTypes.func.isRequired,
+    yAccessor:         React.PropTypes.func.isRequired,
     interpolationType: React.PropTypes.string
   },
 
   getDefaultProps() {
     return {
+      seriesName: '',
       interpolationType: 'linear'
     };
   },
-  
+
   render() {
 
     var props = this.props;
@@ -31,7 +39,7 @@ module.exports = React.createClass({
     var path = area(props.data);
 
     return (
-      <Area fill={props.colors(props.index)} path={path} />
+      <Area fill={props.fill} path={path} />
     );
   }
 

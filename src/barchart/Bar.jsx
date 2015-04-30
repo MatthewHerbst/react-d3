@@ -14,19 +14,21 @@ module.exports = React.createClass({
 
   getDefaultProps() {
     return {
-      offset: 0
+      className: 'rd3-barchart-bar'
     };
   },
 
   render() {
+    var props = this.props;
+
     return (
       <rect
-        fill={this.props.fill}
-        width={this.props.width}
-        height={Math.abs(this.props.height)}
-        x={this.props.x}
-        y={this.props.y}
-        className='rd3-barchart-bar'
+        fill={props.fill}
+        width={props.width}
+        height={Math.abs(props.height)}
+        x={props.x}
+        y={props.y}
+        className={props.className}
       />
     );
   }

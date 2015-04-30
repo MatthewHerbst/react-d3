@@ -26,6 +26,7 @@ module.exports = React.createClass({
 
   getDefaultProps() {
     return {
+      data: [],
       pointRadius: 3,
       margins: {top: 10, right: 20, bottom: 50, left: 45},
       hoverAnimation: true
@@ -40,7 +41,7 @@ module.exports = React.createClass({
 
     var props = this.props;
 
-    if (this.props.data && this.props.data.length < 1) {
+    if (props.data.length < 1) {
       return <g></g>;
     }
 
@@ -85,16 +86,16 @@ module.exports = React.createClass({
     var dataSeriesArray = props.data.map( (series, idx) => {
       return (
           <DataSeries
+            key={idx}
             structure={structure}
             xScale={scales.xScale}
             yScale={scales.yScale}
-            name={series.name}
+            seriesName={series.name}
             data={series.values}
             width={innerWidth}
             height={innerHeight}
-            fill={props.colors(idx)}
+            fill={props.colors(props.colorAccessor(series, idx))}
             pointRadius={props.pointRadius}
-            key={idx}
             hoverAnimation={props.hoverAnimation}
             xAccessor={props.xAccessor}
             yAccessor={props.yAccessor}
@@ -109,6 +110,7 @@ module.exports = React.createClass({
         data={props.data}
         margins={props.margins}
         colors={props.colors}
+        colorAccessor={props.colorAccessor}
         width={props.width}
         height={props.height}
         title={props.title}>

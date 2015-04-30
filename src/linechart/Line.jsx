@@ -8,10 +8,10 @@ module.exports = React.createClass({
   displayName: 'Line',
 
   propTypes: {
-    strokeWidth: React.PropTypes.number,
     path: React.PropTypes.string,
-    fill: React.PropTypes.string,
-    stroke: React.PropTypes.string
+    stroke: React.PropTypes.string,
+    strokeWidth: React.PropTypes.number,
+    fill: React.PropTypes.string
   },
 
   getDefaultProps() {
@@ -33,7 +33,7 @@ module.exports = React.createClass({
 
   componentDidMount() {
     var props = this.props;
-    // The circle reference is observed when both it is set to
+    // The line reference is observed when both it is set to
     // active, and to inactive, so we have to check which one
     var unobserve = props.voronoiSeriesRef.observe(() => {
       var lineStatus = props.voronoiSeriesRef.cursor().deref();

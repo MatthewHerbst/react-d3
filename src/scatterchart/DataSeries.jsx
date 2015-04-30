@@ -10,6 +10,7 @@ module.exports = React.createClass({
 
   propTypes: {
     data: React.PropTypes.array,
+    seriesName: React.PropTypes.string,
     fill: React.PropTypes.string,
     xAccessor: React.PropTypes.func,
     yAccessor: React.PropTypes.func
@@ -20,7 +21,8 @@ module.exports = React.createClass({
       data: [],
       fill: '#fff',
       xAccessor: (d) => d.x,
-      yAccessor: (d) => d.y
+      yAccessor: (d) => d.y,
+      seriesName: ''
     };
   },
 
@@ -44,7 +46,7 @@ module.exports = React.createClass({
         cy = props.yScale(yAccessor(point));
       }
 
-      var id = props.name + '-' + idx;
+      var id = props.seriesName + '-' + idx;
 
       // Create an immstruct reference for the circle id
       // and set it to 'inactive'

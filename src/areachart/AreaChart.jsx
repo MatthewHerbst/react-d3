@@ -84,8 +84,6 @@ module.exports = React.createClass({
     xScale.domain(d3.extent(xValues));
     yScale.domain([0, d3.sum(yMaxValues)]);
 
-    props.colors.domain(seriesNames);
-
     var stack = d3.layout.stack()
       .x(props.xAccessor)
       .y(props.yAccessor)
@@ -95,22 +93,21 @@ module.exports = React.createClass({
 
     var trans = `translate(${ props.margins.left },${ props.margins.top })`;
 
-    var dataSeries = layers.map( (d, idx) => {
+    var dataSeriesArray = layers.map( (series, idx) => {
       return (
-          <DataSeries
-            key={idx}
-            seriesName={d.name}
-            colors={props.colors}
-            index={idx}
-            xScale={xScale}
-            yScale={yScale}
-            data={d.values}
-            xAccessor={props.xAccessor}
-            yAccessor={props.yAccessor}
-            interpolationType={interpolationType}
-          />
-        );
-      });
+        <DataSeries
+          key={idx}
+          data={series.values}
+          seriesName={series.name}
+          fill={props.colors(props.colorAccessor(series, idx))}
+          xScale={xScale}
+          yScale={yScale}
+          xAccessor={props.xAccessor}
+          yAccessor={props.yAccessor}
+          interpolationType={interpolationType}
+        />
+      );
+    });
 
     return (
       <Chart
@@ -119,12 +116,13 @@ module.exports = React.createClass({
         data={data}
         margins={props.margins}
         colors={props.colors}
+        colorAccessor={props.colorAccessor}
         width={props.width}
         height={props.height}
         title={props.title}
       >
         <g transform={trans} className={props.className}>
-          {dataSeries}
+          {dataSeriesArray}
           <XAxis
             xAxisClassName='rd3-areachart-xaxis'
             xScale={xScale}

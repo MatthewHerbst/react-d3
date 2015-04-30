@@ -50,30 +50,31 @@ module.exports = React.createClass({
     this.props.voronoiRef.destroy();
   },
 
-  render() {
-    var props = this.props;
-    return (
-      <circle
-        cx={props.cx}
-        cy={props.cy}
-        r={this.state.circleRadius}
-        fill={this.state.circleColor}
-        id={props.id}
-        className={props.className}
-      />
-    );
-  },
-  
   _animateCircle(id) {
-    this.setState({ 
+    this.setState({
       circleRadius: this.state.circleRadius * ( 5 / 4 )
     });
   },
 
   _restoreCircle(id) {
-    this.setState({ 
+    this.setState({
       circleRadius: this.props.r
     });
+  },
+
+  render() {
+    var props = this.props;
+    var state = this.state;
+    return (
+      <circle
+        cx={props.cx}
+        cy={props.cy}
+        r={state.circleRadius}
+        fill={state.circleColor}
+        id={props.id}
+        className={props.className}
+      />
+    );
   }
 
 });

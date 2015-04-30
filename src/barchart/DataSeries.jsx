@@ -9,20 +9,18 @@ module.exports = React.createClass({
   displayName: 'DataSeries',
 
   propTypes: {
-    values: React.PropTypes.array,
-    labels: React.PropTypes.array,
-    fill: React.PropTypes.string,
-    title: React.PropTypes.string,
-    padding: React.PropTypes.number,
+    value: React.PropTypes.number,
     width: React.PropTypes.number,
     height: React.PropTypes.number,
-    offset: React.PropTypes.number
+    availableHeight: React.PropTypes.number,
+    fill: React.PropTypes.string,
+    seriesName: React.PropTypes.string,
   },
 
   getDefaultProps() {
     return {
-      padding: 0.1,
-      data: []
+      fill: "#3182bd",
+      seriesName: ''
     };
   },
 
@@ -30,26 +28,15 @@ module.exports = React.createClass({
 
     var props = this.props;
 
-    var xScale = d3.scale.ordinal()
-      .domain(d3.range(props.values.length))
-      .rangeRoundBands([0, props.width], props.padding);
-
-    var bars = props.values.map(function(point, idx) {
-      return (
-        <Bar
-          height={props.yScale(0) - props.yScale(point)}
-          width={xScale.rangeBand()}
-          x={xScale(idx)}
-          y={props.yScale(Math.max(0, point))}
-          availableHeight={props.height}
-          fill={props.fill}
-          key={idx}
-        />
-      );
-    });
-
     return (
-      <g>{bars}</g>
+      <Bar
+        width={props.width}
+        height={props.height}
+        x={props.x}
+        y={props.y}
+        availableHeight={props.height}
+        fill={fill}
+      />
     );
   }
 });

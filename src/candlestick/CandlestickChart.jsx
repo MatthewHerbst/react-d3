@@ -30,7 +30,9 @@ module.exports = React.createClass({
     xAxisFormatter: React.PropTypes.func,
     xAccessor: React.PropTypes.func,
     fillUp: React.PropTypes.func,
+    fillUpAccessor: React.PropTypes.func,
     fillDown: React.PropTypes.func,
+    fillDownAccessor: React.PropTypes.func,
     width: React.PropTypes.number,
     height: React.PropTypes.number,
     title: React.PropTypes.string,
@@ -39,8 +41,10 @@ module.exports = React.createClass({
   getDefaultProps() {
     return {
       data: [],
-      fillUp: (i) => 'white',
+      fillUp: (value) => 'white',
+      fillUpAccessor: (d, idx) => idx,
       fillDown: d3.scale.category20c(),
+      fillDownAccessor: (d, idx) => idx,
       margins: {top: 10, right: 20, bottom: 30, left: 45},
       legendOffset: 120,
       width: 400,
@@ -81,20 +85,17 @@ module.exports = React.createClass({
 
     var trans = `translate(${ props.yAxisOffset < 0 ? props.margins.left + Math.abs(props.yAxisOffset) : props.margins.left},${ props.margins.top })`;
 
-    var dataSeries = props.data.map( (series, idx) => {
+    var dataSeriesArray = props.data.map( (series, idx) => {
       return (
           <DataSeries
-            structure={structure}
-            series={series}
             key={idx}
+            data={series.values}
+            structure={structure}
             seriesName={series.name}
-            colors={props.colors}
-            index={idx}
             xScale={scales.xScale}
             yScale={scales.yScale}
-            data={series.values}
-            fillUp={this.props.fillUp(idx)}
-            fillDown={this.props.fillDown(idx)}
+            fillUp={props.fillUp(props.fillUpAccessor(series, idx))}
+            fillDown={props.fillDown(props.fillDownAccessor(series, idx))}
             xAccessor={props.xAccessor}
             yAccessor={props.yAccessor}
           />
@@ -110,7 +111,7 @@ module.exports = React.createClass({
         title={this.props.title}
       >
         <g transform={trans} className='rd3-candlestick'>
-          {dataSeries}
+          {dataSeriesArray}
           <Voronoi
             structure={structure}
             data={allValues}

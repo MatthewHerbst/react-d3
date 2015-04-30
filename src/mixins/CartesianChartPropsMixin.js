@@ -8,6 +8,7 @@ module.exports =  {
   propTypes: {
     axesColor: React.PropTypes.string,
     colors: React.PropTypes.func,
+    colorAccessor: React.PropTypes.func,
     data: React.PropTypes.oneOfType([
       React.PropTypes.array,
       React.PropTypes.object
@@ -36,22 +37,23 @@ module.exports =  {
 
   getDefaultProps: function() {
     return {
-      data: [],
-      xOrient: 'bottom',
-      xAxisLabel: '',
+      data:             [],
+      xOrient:          'bottom',
+      xAxisLabel:       '',
       xAxisLabelOffset: 38,
-      yOrient: 'left',
-      yAxisLabel: '',
+      yOrient:          'left',
+      yAxisLabel:       '',
       yAxisLabelOffset: 35,
-      legend: false,
-      legendOffset: 120,
-      width: 400,
-      height: 200,
-      axesColor: '#000',
-      title: '',
-      colors: d3.scale.category20c(),
-      xAccessor: (d) => d.x,
-      yAccessor: (d) => d.y
+      legend:           false,
+      legendOffset:     120,
+      width:            400,
+      height:           200,
+      axesColor:        '#000',
+      title:            '',
+      colors:           d3.scale.category20c(),
+      colorAccessor:    (d, idx) => idx,
+      xAccessor:        (d) => d.x,
+      yAccessor:        (d) => d.y
     };
   }
 

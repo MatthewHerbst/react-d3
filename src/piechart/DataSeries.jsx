@@ -15,6 +15,7 @@ module.exports = React.createClass({
     innerRadius: React.PropTypes.number,
     radius: React.PropTypes.number,
     colors: React.PropTypes.func,
+    colorAccessor: React.PropTypes.func,
     showInnerLabels: React.PropTypes.bool,
     showOuterLabels: React.PropTypes.bool,
     sectorBorderColor: React.PropTypes.string
@@ -22,9 +23,10 @@ module.exports = React.createClass({
 
   getDefaultProps() {
     return {
-      innerRadius: 0,
-      data: [],
-      colors: d3.scale.category20c()
+      data:          [],
+      innerRadius:   0,
+      colors:        d3.scale.category20c(),
+      colorAccessor: (d, idx) => idx
     };
   },
 
@@ -48,7 +50,7 @@ module.exports = React.createClass({
           labelTextFill={props.labelTextFill}
           valueTextFill={props.valueTextFill}
           valueTextFormatter={props.valueTextFormatter}
-          fill={props.colors(idx)}
+          fill={props.colors(props.colorAccessor(arc, idx))}
           label={props.labels[idx]}
           value={props.data[idx]}
           key={idx}

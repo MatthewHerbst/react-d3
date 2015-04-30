@@ -8,6 +8,8 @@ module.exports = React.createClass({
   displayName: 'LegendChart',
 
   propTypes: {
+    colors: React.PropTypes.func,
+    colorAccessor: React.PropTypes.func,
     title: React.PropTypes.node,
     viewBox: React.PropTypes.string,
     width: React.PropTypes.number,
@@ -25,34 +27,42 @@ module.exports = React.createClass({
 
   getDefaultProps() {
     return {
-      data: {},
-      legend: false,
+      data:           {},
+      legend:         false,
       legendPosition: 'right',
-      sideOffset: 90
+      sideOffset:     90,
+      colors:         d3.scale.category20c(),
+      colorAccessor:  (d, idx) => idx,
     };
   },
 
   _renderLegend() {
+    var props = this.props;
+
     if (this.props.legend) {
       return (
-        <Legend 
-          legendPosition={this.props.legendPosition}
-          margins={this.props.margins}
-          colors={this.props.colors}
-          data={this.props.data}
-          width={this.props.width}
-          height={this.props.height}
-          sideOffset={this.props.sideOffset}
-        /> 
+        <Legend
+          legendPosition={props.legendPosition}
+          margins={props.margins}
+          colors={props.colors}
+          colorAccessor={props.colorAccessor}
+          data={props.data}
+          width={props.width}
+          height={props.height}
+          sideOffset={props.sideOffset}
+        />
       );
     }
   },
 
   _renderTitle() {
-    if (this.props.title != null) {
+    var props = this.props;
+
+    if (props.title != null) {
       return (
-        <h4>{this.props.title}</h4>
+        <h4>{props.title}</h4>
       );
+    } else {
       return null;
     }
   },

@@ -9,13 +9,6 @@ module.exports = React.createClass({
 
   displayName: 'PieChart',
 
-  getDefaultProps: function() {
-    return {
-      title: '',
-      valueTextFormatter: (val) => `${ val }%`
-    };
-  },
-
   propTypes: {
     radius: React.PropTypes.number,
     data: React.PropTypes.array,
@@ -25,10 +18,20 @@ module.exports = React.createClass({
     valueTextFill: React.PropTypes.string,
     valueTextFormatter: React.PropTypes.func,
     colors: React.PropTypes.func,
+    colorAccessor: React.PropTypes.func,
     title: React.PropTypes.string,
     showInnerLabels: React.PropTypes.bool,
     showOuterLabels: React.PropTypes.bool,
     sectorBorderColor: React.PropTypes.string
+  },
+
+  getDefaultProps: function() {
+    return {
+      title:              '',
+      valueTextFormatter: (val) => `${ val }%`,
+      colors:             d3.scale.category20c(),
+      colorAccessor:      (d, idx) => idx
+    };
   },
 
   render: function() {
@@ -51,6 +54,7 @@ module.exports = React.createClass({
             valueTextFormatter={props.valueTextFormatter}
             labels={labels}
             colors={props.colors}
+            colorAccessor={props.colorAccessor}
             transform={transform}
             data={data}
             width={props.width}

@@ -17,20 +17,18 @@ module.exports = React.createClass({
   displayName: 'BarChart',
 
   propTypes: {
-    data: React.PropTypes.array,
-    yAxisTickCount: React.PropTypes.number,
-    width: React.PropTypes.number,
     margins: React.PropTypes.object,
-    height: React.PropTypes.number,
     fill: React.PropTypes.string,
-    title: React.PropTypes.string
+    multiColor: React.PropTypes.bool
   },
 
   getDefaultProps() {
     return {
       yAxisTickCount: 4,
       margins: {top: 10, right: 20, bottom: 40, left: 45},
-      fill: "#3182bd"
+      padding: 0.1,
+      fill: "#3182bd",
+      multiColor: false
     };
   },
 
@@ -38,9 +36,13 @@ module.exports = React.createClass({
 
     var props = this.props;
 
-    var values = props.data.map( (item) => item.value );
+    var values = [];
+    var labels = [];
 
-    var labels = props.data.map( (item) => item.label );
+    props.data.forEach( (item) => {
+      values.push(item.value);
+      labels.push(item.label);
+    });
 
     var margins = props.margins;
 
@@ -54,25 +56,37 @@ module.exports = React.createClass({
       .range([props.height - topBottomMargins, 0]);
 
     var xScale = d3.scale.ordinal()
+      .domain(d3.range(props.values.length))
+      .rangeRoundBands([0, props.width - sideMargins], props.padding);
+
+    var xAxisXScale = d3.scale.ordinal()
         .domain(labels)
-        .rangeRoundBands([0, props.width - sideMargins], 0.1);
+        .rangeRoundBands([0, props.width - sideMargins], props.padding);
 
     var trans = `translate(${ margins.left },${ margins.top })`;
-    
+
+    var colors = (d, idx) => { return (props.multiColor ? props.colors(props.colorAccessor(d, idx)) : props.fill); };
+
+    var dataSeriesArray = props.data.map( (bar, idx) => {
+      return (
+        <DataSeries
+          key={idx}
+          value={bar.value}
+          seriesName={bar.label}
+          width={xScale.rangeBand()}
+          height={yScale(0) - yScale(bar.value)}
+          availableHeight={props.height - topBottomMargins}
+          fill={colors(bar, idx)}
+        />
+      );
+    })
+
     return (
       <Chart width={props.width} height={props.height} title={props.title}>
         <g transform={trans} className='rd3-barchart'>
-          <DataSeries
-            values={values}
-            labels={labels}
-            yScale={yScale}
-            xScale={yScale}
-            margins={margins}
-            data={props.data}
-            width={props.width - sideMargins}
-            height={props.height - topBottomMargins}
-            fill={props.fill}
-          />
+          <g>
+            {dataSeriesArray}
+          </g>
           <YAxis
             yAxisClassName='rd3-barchart-yaxis'
             yAxisTickValues={props.yAxisTickValues}
@@ -90,7 +104,7 @@ module.exports = React.createClass({
             xAxisTickValues={props.xAxisTickValues}
             xAxisLabel={props.xAxisLabel}
             xAxisLabelOffset={props.xAxisLabelOffset}
-            xScale={xScale}
+            xScale={xAxisXScale}
             data={props.data}
             margins={margins}
             tickFormatting={props.xAxisFormatter}
