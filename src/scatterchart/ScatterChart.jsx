@@ -41,6 +41,10 @@ module.exports = React.createClass({
 
     var props = this.props;
 
+    if (!Array.isArray(props.data)) {
+      props.data = [props.data];
+    }
+
     if (props.data.length < 1) {
       return <g></g>;
     }
@@ -53,10 +57,6 @@ module.exports = React.createClass({
 
     if (props.legend) {
       innerWidth = innerWidth - props.legendOffset;
-    }
-
-    if (!Array.isArray(props.data)) {
-      props.data = [props.data];
     }
 
     // // Set margins if label is set

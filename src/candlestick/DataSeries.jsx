@@ -51,8 +51,8 @@ module.exports = React.createClass({
       //Wicks
       var x1 = props.xScale(props.xAccessor(d)),
           y1 = props.yScale(ohlc.high),
-          x2 = x1
-          y2 = props.yScale(ohlc.low),;
+          x2 = x1,
+          y2 = props.yScale(ohlc.low);
 
       // Create unique id: series + index
       var id = props.seriesName + '-' + idx;

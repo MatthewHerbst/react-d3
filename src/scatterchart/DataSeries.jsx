@@ -35,11 +35,13 @@ module.exports = React.createClass({
       var xAccessor = props.xAccessor,
           yAccessor = props.yAccessor,
           cx, cy;
+
       if (Object.prototype.toString.call(xAccessor(point)) === '[object Date]') {
         cx = props.xScale(xAccessor(point).getTime());
       } else {
         cx = props.xScale(xAccessor(point));
       }
+
       if (Object.prototype.toString.call(yAccessor(point)) === '[object Date]') {
         cy = props.yScale(yAccessor(point).getTime());
       } else {
@@ -57,15 +59,16 @@ module.exports = React.createClass({
       // circle component, where it will be observed and dereferenced
       var voronoiRef = props.structure.reference(['voronoi', id]);
 
-      return (<Circle
-        voronoiRef={voronoiRef}
-        cx={cx}
-        cy={cy}
-        r={props.pointRadius}
-        fill={props.fill}
-        key={idx}
-        id={id}
-      />);
+      return (
+        <Circle
+          key={idx}
+          voronoiRef={voronoiRef}
+          cx={cx}
+          cy={cy}
+          r={props.pointRadius}
+          fill={props.fill}
+          id={id}
+        />);
     }, this);
 
     return (

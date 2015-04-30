@@ -54,9 +54,6 @@ module.exports = React.createClass({
       data = [data];
     }
 
-    var yScale = d3.scale.linear()
-      .range([innerHeight, 0]);
-
     var xValues = [];
     var yValues = [];
     var seriesNames = [];
@@ -82,6 +79,10 @@ module.exports = React.createClass({
     }
 
     xScale.domain(d3.extent(xValues));
+
+    var yScale = d3.scale.linear()
+      .range([innerHeight, 0]);
+
     yScale.domain([0, d3.sum(yMaxValues)]);
 
     var stack = d3.layout.stack()

@@ -56,7 +56,7 @@ module.exports = React.createClass({
       .range([props.height - topBottomMargins, 0]);
 
     var xScale = d3.scale.ordinal()
-      .domain(d3.range(props.values.length))
+      .domain(d3.range(values.length))
       .rangeRoundBands([0, props.width - sideMargins], props.padding);
 
     var xAxisXScale = d3.scale.ordinal()

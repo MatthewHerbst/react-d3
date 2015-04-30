@@ -35,7 +35,7 @@ module.exports = React.createClass({
         x={props.x}
         y={props.y}
         availableHeight={props.height}
-        fill={fill}
+        fill={props.fill}
       />
     );
   }
